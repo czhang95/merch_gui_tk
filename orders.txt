@@ -1,0 +1,23 @@
+
+***** ORDER 1 ***** 
+Full name: Charlie Zhang |  Address: asdasdjajsd | Province: British Colombia | City: masdmasdmamd | Email: nsndsndnsd 
+
+ITEMS ORDERED: 
+
+['Arsenal x PRIME Energy Drink', '$20.00']
+['Arsenal x PRIME Energy Drink', '$20.00']
+
+^^^ # OF ITEMS ORDERED ^^^: 2 
+^^^ ORDER TOTAL ^^^: $40.00 
+
+***** ORDER 1 ***** 
+Full name: dadsad |  Address: adadadad | Province: British Colombia | City: adad | Email: adadad 
+
+ITEMS ORDERED: 
+
+['Arsenal x PRIME Energy Drink', '$20.00']
+['Arsenal x PRIME Energy Drink', '$20.00']
+
+^^^ # OF ITEMS ORDERED ^^^: 2 
+^^^ ORDER TOTAL ^^^: $40.00 
+

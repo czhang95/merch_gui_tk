@@ -1,59 +1,64 @@
 from tkinter import *
-from tkinter import ttk
 from PIL import Image, ImageTk
 import tkinter.font as font
 import config
 
+# ***** STORE ITEM *****
 
+# "#edeff1" - default grey colour (put these into config later)
+# "#9c8249" - gold colour
 
-# ***** STORE OPTION *****
-class store_option:
-    def __init__(self, root, name, img, price, app):
-        self.app = app
+class StoreItem(Frame):
+    def __init__(self, root, name, img, price, font_size):
+        super().__init__(root)
         self.cost = 0
-
-        self.color = "#edeff1"
         self.root = root
         self.name = name
         self.img = img
         self.price = price
-        
-        self.frame = Frame(self.root, bg = self.color, width = 1000, height = 1000)
-        self.item_options_frame = Frame(self.frame, bg = self.color)
-        
-        self.misc()
-        self.size()
+        self.font_size = font_size
+        # self.item_frame = Frame(self.root, bg = "#edeff1", width = 200, height = 300)
+        # self.options_frame = Frame(self.frame, bg = "#edeff1")
 
-    def misc(self):        
-        # store option image
+        # print("TEST123213123123123")
+        #xsxsframe = Label(self, text = "TEST TEST TEST", fg = "green", bg = "blue")
+        # self.frame.pack(side = TOP)
+
+        self.load_image()
+        self.item_options()
+
+        # self.pack()
+        # self.pack_propagate(0)
+
+    def load_image(self):        
+        # Load item image
+        item_frame = Frame(self, bg = "#edeff1", width = 200, height = 300)
         original = Image.open(self.img)
-        resized = original.resize((150, 140))
-        display = ImageTk.PhotoImage(resized)
-        banner = Label(self.frame, image = display)
-        banner.image = display
-        banner.pack(side = TOP)
+        resized = original.resize((150, 150))
+        display_image = ImageTk.PhotoImage(resized)
+        display = Label(item_frame, image = display_image, bg = "#edeff1")
+        display.image = display_image
+        display.pack(side = TOP)
+        item_frame.pack(side = TOP)
+    
+    def item_options(self):
+        # Item options and buttons 
+
+        option_frame = Frame(self, bg = "#edeff1")
+        item_name = Label(option_frame, text = self.name, font = ("Arsenal" , self.font_size), wraplength = 100, bg = "#edeff1", fg = "black")
+        item_name.config(bg = "#edeff1")
+        item_name.pack()
         
-        item = Label(self.frame, text = self.name, font = ("Arsenal" , 12), wraplength = 100)
-        item.pack()
-        item.config(bg = self.color)
-        
-        price = Label(self.frame, text = self.price)
+        price = Label(option_frame, text = self.price, bg = "#edeff1", fg = "black")
         price.pack()
-        price.config(bg = self.color)
         
-        self.order_button = Button(self.item_options_frame, text= "Add to cart", command = lambda: [self.order_receipt(name = self.name, price = self.price), self.update_order()])
-        self.item_options_frame.pack(side = BOTTOM)
+        order_button = Button(option_frame, width = 8, height = 2, text= "Add to cart", command = lambda: [self.order_receipt(name = self.name, price = self.price), self.update_order()], bg = "white", fg = "black")
+        order_button.pack()
+        order_button.pack(pady = (10, 8)) #padx = (41, 41), pady = (0, 8))
+        order_button.config(bg = "#edeff1")
         
-        self.frame.pack(side = LEFT, pady = (36, 0), padx = (0, 10))
-        self.frame.config(highlightbackground = "#9c8249", highlightthickness = 2)
-    
-    def size(self):
-        self.order_button.pack(side = RIGHT, padx = (41, 41), pady = (22, 3))
-        self.order_button.config(bg = self.color)
-    
-    def test(self, test):
-        print(test)
-    
+        option_frame.pack(side = BOTTOM) #pady = (36, 0))
+
     def order_receipt(self, **kwargs):
         print("HELLO")
         print(kwargs)
@@ -98,35 +103,44 @@ class store_option:
             print("LAST:", config.receipt[-1])
             receipt_str_len = len(str(config.receipt[-1]))
             order_text = str(config.receipt[-1])[1: receipt_str_len - 1]
-            # receipt.insert(str(row) + ".0", order_text + "\n")
-            receipt.insert(END, order_text + "\n\n")
+            receipt.insert(END, order_text + '\n\n')
             receipt.see("end")
             receipt.config(state = DISABLED)
             row += 1
 
 
-class clothes(store_option):
-    def __init__(self, root, name, img, price, app):
-        super().__init__(root, name, img, price, app)
+class clothesItem(StoreItem):
+    def __init__(self, root, name, img, price, font_size):
+        super().__init__(root, name, img, price, font_size)
         
-    def size(self):        
-        size_select_prompt = Label(self.item_options_frame, text = "Size:")
-        size_select_prompt.pack(side = TOP, padx = (0, 150))
-        size_select_prompt.config(bg = self.color)
-        options_list = ["Small", "Medium", "Large", "XLarge", "XXLarge"]
-        size_selected = StringVar(self.root)
-        size_selected.set("Select")
-        size_selection = OptionMenu(self.item_options_frame, size_selected, *options_list)
-        size_selection.pack(side = LEFT)
-        size_selection.config(bg = self.color)
-        
-        self.order_button = Button(self.item_options_frame, text= "Add to cart", command = lambda: [self.order_receipt(name = self.name, price = self.price, size = size_selected.get()), self.update_order()])
+    def item_options(self):
+        option_frame = Frame(self, bg = "#edeff1")
 
-        self.order_button.pack(side = RIGHT, pady = (0, 3))
-        self.order_button.config(bg = self.color)
+        item_name = Label(option_frame, text = self.name, font = ("Arsenal" , self.font_size), wraplength = 100, bg = "#edeff1", fg = "black")
+        item_name.config(bg = "#edeff1")
+        item_name.pack()
+        
+        price = Label(option_frame, text = self.price, bg = "#edeff1", fg = "black")
+        price.pack()
+
+        size_select_prompt = Label(option_frame, text = "Size:", fg = "black")
+        size_select_prompt.pack(side = TOP, padx = (0, 150))
+        size_select_prompt.config(bg = "#edeff1")
+        sizes_list = ["Small    ", "Medium", "Large  ", "XL     ", "XXL   "]
+        size_selected = StringVar(option_frame)
+        size_selected.set("Select   ")
+        size_selection = OptionMenu(option_frame, size_selected, *sizes_list)
+        size_selection.pack(side = LEFT)
+        size_selection.config(bg = "#edeff1", fg = "black", activebackground = "#edeff1", activeforeground = "black")
+        size_selection["menu"].config(bg = "#edeff1", fg = "black")
+        
+        order_button = Button(option_frame, fg = 'black', borderwidth = 0, width = 6, height = 2, text= "Add to cart", command = lambda: [self.order_receipt(name = self.name, price = self.price, size = size_selected.get()), self.update_order()])
+    
+        order_button.pack(side = RIGHT, pady = (0, 8))
+        option_frame.pack(side = BOTTOM)
 
 # ******** CHECKOUT - ORDER FRAME ******** 
-class order_frame:
+class orderFrame:
     def __init__(self, root):
         print(config.receipt)
         self.root = root
@@ -137,21 +151,20 @@ class order_frame:
         self.shopping_cart()
         self.order_item_display(self.order_item_frame)
         self.buttons()
-        self.master.pack(side = RIGHT, pady = (35, 0))
+        self.master.pack(side = RIGHT)
         self.confirm_button_presses = 0
 
     def shopping_cart(self):   
         number_of_items = len(config.receipt)
         noi_str = str(number_of_items)
         global noi_display
-        noi_display = Label(self.shopping_cart_frame, text = "Number of items in cart: " + noi_str)
+        noi_display = Label(self.shopping_cart_frame, bg = "#edeff1", fg = "black", text = "Number of items in cart: " + noi_str)
         noi_display.pack(side = TOP, pady = (10, 0))
         
         global order_cost_display
-        order_cost_display = Label(self.shopping_cart_frame, text = "Order cost: $" + str(config.order_cost) + ".00")
+        order_cost_display = Label(self.shopping_cart_frame, bg = "#edeff1", fg = "black", text = "Order cost: $" + str(config.order_cost) + ".00")
         
         order_cost_display.pack(side = TOP, pady = (0, 10))
-        print("egydewdyedygweydweyyd")
 
         self.shopping_cart_frame.pack(side = TOP)
         self.frame.pack()
@@ -161,24 +174,25 @@ class order_frame:
         global receipt
         receipt = Text(root, height = 30, width = 30, wrap = WORD)
         receipt.pack(side = TOP, padx = 10, pady = 10)
-        receipt.config(yscrollcommand = yScroll.set, state = DISABLED)
+        receipt.config(yscrollcommand = yScroll.set, state = DISABLED, bg = "white", fg = "black")
         yScroll.config(command = receipt.yview)
         root.pack()
     
     def buttons(self):
-        button_text = font.Font(size = 30)
+        button_text = font.Font(family = "Arsenal", size = 20)
         
-        reset = Button(self.order_item_frame, text = '  Reset Order  ', bg = "#9c8249", fg = "#053374", command = lambda: [self.reset_receipt()])
+        reset = Button(self.order_item_frame, text = 'Reset Order', bg = "#9c8249", fg = "#053374", width = 9, height = 1, command = lambda: [self.reset_receipt()])
         reset["font"] = button_text
+        reset.pack_propagate(0)
         reset.pack(pady = (10, 0))
         
-        confirm = Button(self.order_item_frame, text = 'Confirm Order', bg = "#9c8249", fg = "#053374", command = lambda: [self.order_confirmation_gui()])
+        confirm = Button(self.order_item_frame, text = 'Confirm Order', bg = "#9c8249", fg = "#053374", width = 9, height = 1, command = lambda: [self.order_confirmation_gui()])
         confirm["font"] = button_text
+        confirm.pack_propagate(0)
         confirm.pack(pady = (0, 10))
 
     def order_confirmation_gui(self):
         if config.confirm_button_press == True:
-            print("YUUUUUUUUUUP")
             print(config.confirm_button_press)
             error_popup(self.root, "window", None)
             return
@@ -188,83 +202,87 @@ class order_frame:
         color = "#edeff1"
         root = Toplevel(self.root, bg = color)
         root.resizable(0, 0)
-        root.geometry("400x850")
+        root.geometry("400x900")
         root.title("Order Checkout")
         
-        final_order_label = Label(root, text = "Final order receipt: ")
+        final_order_label = Label(root, text = "Final order receipt: ", bg = color, fg = "black")
         final_order_label.pack()
 
         yScroll = Scrollbar(root, orient = VERTICAL)
         final_receipt = Text(root, height = 30, width = 30, wrap = WORD)
+        final_receipt.config(yscrollcommand = yScroll.set, state = NORMAL, bg = "white", fg = "black")
         final_receipt.pack(side = TOP, padx = 10, pady = 10)
+        yScroll.config(command = final_receipt.yview)
         
         final_receipt_str = receipt.get("1.0", END)
-        
-        print("202 FINAL :", final_receipt_str)
-        print("203: ", final_receipt_str.split())
-        print(len(final_receipt_str))
 
         if len(final_receipt_str) == 1:
-            print("JIIJEFJIEIJFJEFIE")
             error_popup(self.root, "receipt", None)
             root.destroy()
             return
 
             # "return" ends current function, thus ending the order_confirmation popup from appearing once this error occurs
         final_receipt.insert(END, final_receipt_str)
+        final_receipt.config(state = DISABLED)
         
-        no_item = Label(root, text = "Items to checkout: " + str(len(config.receipt)))
+        no_item = Label(root, text = "Items to checkout: " + str(len(config.receipt)), bg = color, fg = "black")
         no_item.pack()
         
-        price = Label(root, text = "Total cost: $" + str(config.order_cost) + ".00")
+        price = Label(root, text = "Total cost: $" + str(config.order_cost) + ".00", bg = color, fg = "black")
         price.pack()
         
         warning_font = font.Font(size = 7)
-        warning_display1 = Label(root, text = "PRESS 'ENTER' AFTER ENTERING INPUT TO SAVE IT")
-        warning_display2 = Label(root, text = "ONCE ALL FIELDS ARE COMPLETE, PRESS 'SAVE' TO CONFIRM ORDER")
+        warning_display1 = Label(root, text = "PRESS 'ENTER' AFTER ENTERING INPUT TO SAVE IT", bg = color, fg = "black")
+        warning_display2 = Label(root, text = "ONCE ALL FIELDS ARE COMPLETE, PRESS 'SAVE' TO CONFIRM ORDER", bg = color, fg = "black")
         warning_display1["font"] = warning_font
         warning_display2["font"] = warning_font
         warning_display1.pack(side = TOP)
         warning_display2.pack(side = TOP)
         
         # Full Name
-        Label(root, text = "Full Name", bg = color).pack(pady = (padding, 0))
+        Label(root, text = "Full Name", bg = color, fg = "black").pack(pady = (padding, 0))
         name = StringVar()
         name_entry = Entry(root,  textvariable = name)
+        name_entry.config(bg = "white", fg = "black")
         name_entry.pack()
 
         # Address
-        Label(root, text = "Address", bg = color).pack(pady = (padding, 0))
+        Label(root, text = "Address", bg = color, fg = "black").pack(pady = (padding, 0))
         address = StringVar()
         address_entry = Entry(root, textvariable = address)
+        address_entry.config(bg = "white", fg = "black")
         address_entry.pack()
         
         # Province
-        Label(root, text = "Province", bg = color).pack(pady = (padding, 0))
+        Label(root, text = "Province", bg = color, fg = "black").pack(pady = (padding, 0))
         options = self.read_province("provinces.txt")
         province = StringVar()
         province.set("Select")
         province_entry = OptionMenu(root, province, *options)
+        province_entry.config(bg = color, fg = "black", activebackground = "white", activeforeground = "black")
+        province_entry["menu"].config(bg = "white", fg = "black")
         province_entry.pack()
         
         # City
-        Label(root, text = "City", bg = color).pack(pady = (padding, 0))
+        Label(root, text = "City", bg = color, fg = "black").pack(pady = (padding, 0))
         city = StringVar()
         city_entry = Entry(root, textvariable = city)
+        city_entry.config(bg = "white", fg = "black")
         city_entry.pack()
         
         # Email
-        Label(root, text = "Email", bg = color).pack(pady = (padding, 0))
+        Label(root, text = "Email", bg = color, fg = "black").pack(pady = (padding, 0))
         email = StringVar()
         email_entry = Entry(root, textvariable = email)
+        email_entry.config(bg = "white", fg = "black")
         email_entry.pack()
         
         # Save order
         button_text = font.Font(size = 30)
         
-        save = Button(root, text = 'Save  Order', bg = "#9c8249", fg = "#053374", command = lambda: [self.save_data(name, address, province, city, email, root, self.root)])
+        save = Button(root, text = 'Save  Order', height = 1, width = 8, bg = "#9c8249", fg = "#053374", command = lambda: [self.save_data(name, address, province, city, email, root, self.root)])
         save["font"] = button_text
-        save.pack()
+        save.pack(pady = (20, 0))
         
         config.confirm_button_press = True
         root.protocol("WM_DELETE_WINDOW", self.close())
@@ -339,7 +357,7 @@ class order_frame:
         popup.resizable(0, 0)
         popup.geometry("350x100")
         
-        success_image = Image.open("winner.png")
+        success_image = Image.open("assets/winner.png")
         resized = success_image.resize((80, 80))
         image_display = ImageTk.PhotoImage(resized)
         image_widget = Label(popup, bg = "white", image = image_display)
@@ -352,10 +370,6 @@ class order_frame:
         success_text.config(state = DISABLED)
         success_text.pack(side = RIGHT, pady = (7, 0))
         self.reset_receipt()
-
-
-def test():
-    print("*****TEST******")
     
 def error_popup(root, call, item):
     popup = Toplevel(root, bg = "white")

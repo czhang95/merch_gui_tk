@@ -12,4 +12,3 @@ class banner():
         banner = Label(root, image = display)
         banner.image = display
         banner.pack(padx = (0, padding), pady = (10, 0), side = ORI)
-        banner.configure(background = "#9c8249")

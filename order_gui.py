@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.font as font
 import config
 
-class order_frame:
+class orderFrame:
     def __init__(self, root):
         print(config.receipt)
         self.master = Frame(root)
@@ -13,6 +13,7 @@ class order_frame:
         self.number_of_items = len(config.receipt) - 1
         self.shopping_cart()
         self.user_info_gui(self.frame)
+        self.number_of_orders = 0
         # self.shopping_cart_frame.after(100, self.update)
 
     def shopping_cart(self):   
@@ -45,7 +46,7 @@ class order_frame:
         
         
 
-    def user_info_gui(self, root):
+    def user_info_gui(self):
         padding = 30
         
         # Full Name
@@ -81,9 +82,9 @@ class order_frame:
         self.email_entry.pack()
         
         # Save/Reset order
-        button_text = font.Font(size = 30)
+        button_text = font.Font(family = "Arsenal", size = 20)
         
-        reset = Button(self.user_info_frame, text = 'Reset Order', bg = "#9c8249", fg = "#053374", command = lambda: [self.reset_entrybox(), test()])
+        reset = Button(self.user_info_frame, text = 'Reset Order', bg = "#9c8249", fg = "#053374", command = lambda: [self.reset_entrybox()])
         reset["font"] = button_text
         reset.pack(pady = (30, 0))
         
@@ -103,7 +104,6 @@ class order_frame:
         self.number_of_orders += 1
     
     def reset_entrybox(self):
-        print("HELLO")
         self.name_entry.delete(0, END)
         self.address_entry.delete(0, END)
         self.province.set("Select")
@@ -114,37 +114,34 @@ class order_frame:
         self.shopping_cart()
         self.shopping_cart_frame.after(1000, self.update)
 
-def test():
-    print("*****TEST******")
 
 def save_data(name, address, province, city, email, number_of_orders, receipt, total):
-    print("WOOOOOOOPOOOOOAHHHHHHH")
-    fileD = open('orders.txt','a', encoding = "UTF-8")
-    fileD.write(f"***** ORDER {number_of_orders} ***** \n")
+    file_d = open('orders.txt','a', encoding = "UTF-8")
+    file_d.write(f"***** ORDER {number_of_orders} ***** \n")
     
     username = name.get()
-    fileD.write(f'Full name: {username} |  ')
+    file_d.write(f'Full name: {username} |  ')
     
     useraddress = address.get()
-    fileD.write(f'Address: {useraddress} | ')
+    file_d.write(f'Address: {useraddress} | ')
     
     userprov = province.get()
-    fileD.write(f'Province: {userprov} | ')
+    file_d.write(f'Province: {userprov} | ')
     
     usercity = city.get()
-    fileD.write(f'City: {usercity} | ')
+    file_d.write(f'City: {usercity} | ')
     
     useremail = email.get()
-    fileD.write(f'Email: {useremail} \n')
+    file_d.write(f'Email: {useremail} \n')
     
-    fileD.write("ITEMS ORDERED: \n")
+    file_d.write("ITEMS ORDERED: \n")
     
     for order in receipt:
-        fileD.write(order + "\n")
+        file_d.write(order + "\n")
 
-    fileD.write(f"^^^ORDER TOTAL^^^: {total}")
+    file_d.write(f"^^^ORDER TOTAL^^^: {total}")
     
-    fileD.close()
+    file_d.close()
     
     
 def read_province(file):

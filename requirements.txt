@@ -1,2 +1,1 @@
-tkinter
-pillow
+pillow=11.0.0
